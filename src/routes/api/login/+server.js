@@ -2,8 +2,12 @@ import { db } from '$lib/server/db';
 import { user } from '$lib/server/db/schema';
 import { eq } from 'drizzle-orm';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { json } from '@sveltejs/kit';
 
-export async function POST({ request }) {
+const SECRET = 'hemmelig_nøgle'; // Eller brug process.env.JWT_SECRET
+
+export async function POST({ request, cookies }) {
 	const { username, password } = await request.json();
 
 	const found = await db.query.user.findFirst({
@@ -20,5 +24,14 @@ export async function POST({ request }) {
 		return new Response('Forkert kodeord', { status: 401 });
 	}
 
-	return new Response('Login OK', { status: 200 });
+	// JWT og cookie
+	const token = jwt.sign({ username }, SECRET, { expiresIn: '1h' });
+
+	cookies.set('session', token, {
+		path: '/',
+		httpOnly: true,
+		maxAge: 60 * 60 // 1 time
+	});
+
+	return json({ message: 'Login OK' });
 }

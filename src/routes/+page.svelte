@@ -1,2 +1,32 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script> 
+	let username = '';
+	let password = '';
+
+	const createUser = async () => {
+		const res = await fetch('/api/admin', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ username, password })
+		});
+
+		if (res.ok) {
+			alert('Bruger oprettet!');
+			username = '';
+			password = '';
+		} else {
+			alert('Noget gik galt...');
+		}
+	};
+</script>
+
+<h1 class="text-2xl font-bold my-4">Opret ny bruger</h1>
+<input bind:value={username} placeholder="Brugernavn" class="input input-bordered m-2" />
+<input type="password" bind:value={password} placeholder="Kodeord" class="input input-bordered m-2" />
+<button on:click={createUser} class="btn btn-primary m-2">Opret bruger</button>
+
+<!-- Link til login -->
+<p class="mt-4">
+	Allerede oprettet? <a href="/login" class="link link-accent">Log ind her</a>
+</p>

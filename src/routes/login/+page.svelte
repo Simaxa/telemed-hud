@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+
 	let username = '';
 	let password = '';
 
@@ -10,7 +12,7 @@
 		});
 		if (response.status === 200) {
 			alert('Login succesfuldt!');
-			// evt. navigate til /admin eller anden side
+			goto('/indsend'); // 👈 redirect her
 		} else {
 			alert('Forkert brugernavn eller password');
 		}

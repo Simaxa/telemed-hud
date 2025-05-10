@@ -25,3 +25,8 @@
 <input bind:value={username} placeholder="Brugernavn" class="input input-bordered m-2" />
 <input type="password" bind:value={password} placeholder="Kodeord" class="input input-bordered m-2" />
 <button on:click={createUser} class="btn btn-primary m-2">Opret bruger</button>
+
+<p class="mt-4 text-sm">
+	Har du allerede en bruger? 
+	<a href="/login" class="text-blue-600 underline">Log ind her</a>
+</p>
